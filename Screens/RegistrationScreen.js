@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   TextInput,
   Pressable,
+  ImageBackground,
 } from "react-native";
 
 import {
@@ -19,18 +20,20 @@ import {
 } from "@expo-google-fonts/roboto";
 
 import SvgComponent from "../components/SvgComponent";
+import { useNavigation } from "@react-navigation/native";
+import { Button } from "react-native";
+import { TouchableOpacity } from "react-native";
 
-export default function RegistrationScreen({
-  isShownKeyboard,
-  setIsShownKeyboard,
-}) {
+export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isHiddenPassword, setIsHiddenPassword] = useState(true);
+  const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const loginHandler = (text) => setLogin(text);
   const passwordHandler = (text) => setPassword(text);
   const emailHandler = (text) => setEmail(text);
+  const navigation = useNavigation();
 
   const reset = () => {
     setLogin("");
@@ -55,6 +58,7 @@ export default function RegistrationScreen({
     );
     setIsShownKeyboard(false);
     Keyboard.dismiss();
+    navigation.navigate("Home", { screen: "PostsScreen" });
     reset();
   };
 
@@ -78,87 +82,109 @@ export default function RegistrationScreen({
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={onPressWithoutFeedback}>
-        <View
-          style={{
-            ...styles.form,
-            marginBottom: isShownKeyboard ? -162 : 0,
-          }}
+      <TouchableWithoutFeedback
+        style={styles.mainContainer}
+        onPress={onPressWithoutFeedback}
+      >
+        <ImageBackground
+          source={require("../assets/images/bg-image.png")}
+          style={styles.image}
+          resizeMode="cover"
         >
-          <KeyboardAvoidingView
-            behavior={Platform.OS == "ios" ? "padding" : "height"}
-          >
-            <View style={styles.avatarWrapper}>
-              <SvgComponent />
-            </View>
-            <Text style={styles.title}>Реєстрація</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Логін"
-              placeholderTextColor={"#BDBDBD"}
-              name="login"
-              value={login}
-              onChangeText={loginHandler}
-              onFocus={() => setIsShownKeyboard(true)}
-            />
-            <TextInput
-              style={{ ...styles.input, marginTop: 16 }}
-              placeholder="Адреса електронної пошти"
-              placeholderTextColor={"#BDBDBD"}
-              name="email"
-              value={email}
-              onChangeText={emailHandler}
-              onFocus={() => setIsShownKeyboard(true)}
-            />
-            <View style={{ position: "relative", width: "100%" }}>
-              <TextInput
-                style={{
-                  ...styles.input,
-                  marginTop: 16,
-                }}
-                placeholder="Пароль"
-                placeholderTextColor={"#BDBDBD"}
-                name="password"
-                value={password}
-                onChangeText={passwordHandler}
-                secureTextEntry={isHiddenPassword}
-                onFocus={() => setIsShownKeyboard(true)}
-              />
-              <Pressable
-                onPress={togglePassword}
-                style={{
-                  position: "absolute",
-                  right: 16,
-                  bottom: 8,
-                }}
-              >
-                <Text
-                  style={{
-                    color: "#1B4371",
-                    fontSize: 16,
-                    paddingTop: 8,
-                    paddingBottom: 8,
-                  }}
-                >
-                  {isHiddenPassword ? "Показати" : "Сховати"}
-                </Text>
-              </Pressable>
-            </View>
-            <Pressable
-              title={"Register"}
-              style={({ pressed }) => [
-                {
-                  backgroundColor: pressed ? "#c75502" : "#FF6C00",
-                },
-                styles.btn,
-              ]}
-              onPress={onRegister}
+          <TouchableWithoutFeedback onPress={onPressWithoutFeedback}>
+            <View
+              style={{
+                ...styles.form,
+                marginBottom: isShownKeyboard ? -162 : 0,
+              }}
             >
-              <Text style={styles.btnTitle}>Зареєстуватися</Text>
-            </Pressable>
-            <Text style={styles.linkTitle}>Вже є акаунт? Увійти</Text>
-          </KeyboardAvoidingView>
-        </View>
+              <KeyboardAvoidingView
+                behavior={Platform.OS == "ios" ? "padding" : "height"}
+              >
+                <View style={styles.avatarWrapper}>
+                  <SvgComponent />
+                </View>
+                <Text style={styles.title}>Реєстрація</Text>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Логін"
+                  placeholderTextColor={"#BDBDBD"}
+                  name="login"
+                  value={login}
+                  onChangeText={loginHandler}
+                  onFocus={() => setIsShownKeyboard(true)}
+                />
+                <TextInput
+                  style={{ ...styles.input, marginTop: 16 }}
+                  placeholder="Адреса електронної пошти"
+                  placeholderTextColor={"#BDBDBD"}
+                  name="email"
+                  value={email}
+                  onChangeText={emailHandler}
+                  onFocus={() => setIsShownKeyboard(true)}
+                />
+                <View style={{ position: "relative", width: "100%" }}>
+                  <TextInput
+                    style={{
+                      ...styles.input,
+                      marginTop: 16,
+                    }}
+                    placeholder="Пароль"
+                    placeholderTextColor={"#BDBDBD"}
+                    name="password"
+                    value={password}
+                    onChangeText={passwordHandler}
+                    secureTextEntry={isHiddenPassword}
+                    onFocus={() => setIsShownKeyboard(true)}
+                  />
+                  <Pressable
+                    onPress={togglePassword}
+                    style={{
+                      position: "absolute",
+                      right: 16,
+                      bottom: 8,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        color: "#1B4371",
+                        fontSize: 16,
+                        paddingTop: 8,
+                        paddingBottom: 8,
+                      }}
+                    >
+                      {isHiddenPassword ? "Показати" : "Сховати"}
+                    </Text>
+                  </Pressable>
+                </View>
+                <Pressable
+                  title={"Register"}
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed ? "#c75502" : "#FF6C00",
+                    },
+                    styles.btn,
+                  ]}
+                  onPress={onRegister}
+                >
+                  <Text style={styles.btnTitle}>Зареєстуватися</Text>
+                </Pressable>
+                <TouchableOpacity>
+                  <Text style={styles.linkTitle}>
+                    {" "}
+                    Вже є акаунт?{" "}
+                    <Text
+                      style={styles.linkUnderlined}
+                      onPress={() => navigation.navigate("Login")}
+                    >
+                      Увійти
+                    </Text>
+                  </Text>
+                </TouchableOpacity>
+              </KeyboardAvoidingView>
+            </View>
+          </TouchableWithoutFeedback>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </>
   );
@@ -250,11 +276,10 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     marginBottom: 66,
   },
-  // homeIndicator: {
-  //   width: 134,
-  //   height: 5,
-  //   borderRadius: 100,
-  //   background: "black",
-  //   marginBottom: 8,
-  // },
+  linkUnderlined: {
+    fontSize: 16,
+    textDecorationLine: "underline",
+    textDecorationStyle: "solid",
+    textDecorationColor: "#1b4371",
+  },
 });
