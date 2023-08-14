@@ -2,52 +2,133 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import PostsScreen from "../Screens/PostsScreen";
 import CreatePostsScreen from "../Screens/CreatePostsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
-// import Ionicons from "@expo/vector-icons";
 
-import { View } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { FontAwesome5, AntDesign, Ionicons, Feather } from "@expo/vector-icons";
+import { View, Image } from "react-native";
 
 import { Pressable } from "react-native";
-import { Image } from "react-native";
-import Add from "../assets/images/add.svg";
-import { createIconSetFromIcoMoon } from "@expo/vector-icons";
+
+import LogoutIcon from "../assets/images/log-out.svg";
+import AddIcon from "../assets/images/union.svg";
+import UserIcon from "../assets/images/user.svg";
+import GridIcon from "../assets/images/grid.svg";
+import BackIcon from "../assets/images/arrow-left.svg";
+import { useNavigation } from "@react-navigation/native";
 
 const Tabs = createBottomTabNavigator();
 
-export const Icon = createIconSetFromIcoMoon(
-  require("../assets/fonts/selection.json"),
-  "IcoMoon",
-  "icomoon.ttf"
-);
-
 export const BottomTabNavigator = () => {
+  const navigation = useNavigation();
   return (
     <Tabs.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+        headerTitleAlign: "center",
+        // tabBarIcon: ({ focused, color, size }) => {
+        //   let iconName;
 
-          if (route.name === "PostsScreen") {
-            iconName = focused
-              ? "ios-information-circle"
-              : "ios-information-circle-outline";
-          } else if (route.name === "CreatePostsScreen") {
-            iconName = focused ? "ios-list-box" : "ios-list";
-          } else {
-            iconName = focused ? "ios-list-box" : "ios-list";
-          }
-          return <Ionicons name={iconName} size={size} color={color} />;
+        //   if (route.name === "PostsScreen") {
+        //     iconName = focused
+        //       ? //   ? "ios-information-circle"
+        //         //   : "ios-information-circle-outline";
+        //         require("../assets/images/add-1.svg")
+        //       : require("../assets/images/add-2.svg");
+        //   } else if (route.name === "CreatePostsScreen") {
+        //     iconName = focused
+        //       ? require("../assets/images/add-1.svg")
+        //       : require("../assets/images/add-2.svg");
+        //   } else {
+        //     iconName = focused
+        //       ? require("../assets/images/add-1.svg")
+        //       : require("../assets/images/add-2.svg");
+        //   }
+
+        //   return <Image source={iconName} size={size} color={color} />;
+        // },
+        headerTitleStyle: {
+          // textAlign: "center",
+
+          fontFamily: "Roboto_500Medium",
+          fontStyle: "normal",
+          fontSize: 17,
+          fontWeight: 500,
+          lineHeight: 22,
+          letterSpacing: -0.408,
+          color: "#212121",
+        },
+        headerStyle: {
+          height: 88,
+          borderBottomWidth: 1,
+          boxShadow: "0px 0.5px 0px 0px rgba(0, 0, 0, 0.30)",
+          // backdropFilter: "blur(13.591408729553223px)",
+        },
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          height: 71,
+          paddingTop: 17,
+          paddingBottom: 30,
+          paddingHorizontal: 90,
+          boxShadow: " 0px -0.5px 0px 0px rgba(0, 0, 0, 0.30)",
+          backdropFilter: "blur(13.591408729553223px)",
+          borderTopWidth: 1,
         },
       })}
-      tabBarOptions={{
-        activeTintColor: "tomato",
-        inactiveTintColor: "gray",
-      }}
     >
-      <Tabs.Screen name="PostsScreen" component={PostsScreen} />
-      <Tabs.Screen name="CreatePostsScreen" component={CreatePostsScreen} />
-      <Tabs.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Tabs.Screen
+        name="Публікації"
+        component={PostsScreen}
+        options={{
+          headerRight: () => {
+            return (
+              <Pressable style={{ marginRight: 16 }} onPress={() => {}}>
+                <LogoutIcon />
+              </Pressable>
+            );
+          },
+          tabBarIcon: () => <GridIcon />,
+        }}
+      />
+      <Tabs.Screen
+        name="Створити публікацію"
+        component={CreatePostsScreen}
+        options={{
+          tabBarIcon: () => {
+            return (
+              <View
+                style={{
+                  width: 70,
+                  height: 40,
+                  borderRadius: 20,
+                  backgroundColor: "#FF6C00",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <AddIcon />
+              </View>
+            );
+          },
+          tabBarStyle: { display: "none" },
+          tabBarLabel: "Створити публікацію",
+          headerLeft: () => {
+            return (
+              <Pressable
+                style={{ marginLeft: 16 }}
+                onPress={() => navigation.navigate("Публікації")}
+              >
+                <BackIcon />
+              </Pressable>
+            );
+          },
+        }}
+      />
+      <Tabs.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+          tabBarIcon: () => <UserIcon />,
+        }}
+      />
     </Tabs.Navigator>
   );
 };

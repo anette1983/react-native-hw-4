@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   StyleSheet,
@@ -10,7 +10,6 @@ import {
   TouchableWithoutFeedback,
   TextInput,
   Pressable,
-  ImageBackground,
 } from "react-native";
 
 import {
@@ -21,8 +20,8 @@ import {
 
 import SvgComponent from "../components/SvgComponent";
 import { useNavigation } from "@react-navigation/native";
-import { Button } from "react-native";
 import { TouchableOpacity } from "react-native";
+import CustomImgBg from "../components/CustomImgBg";
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
@@ -82,15 +81,16 @@ export default function RegistrationScreen() {
 
   return (
     <>
-      <TouchableWithoutFeedback
+      <TouchableOpacity
         style={styles.mainContainer}
         onPress={onPressWithoutFeedback}
       >
-        <ImageBackground
+        {/* <ImageBackground
           source={require("../assets/images/bg-image.png")}
           style={styles.image}
           resizeMode="cover"
-        >
+        > */}
+        <CustomImgBg>
           <TouchableWithoutFeedback onPress={onPressWithoutFeedback}>
             <View
               style={{
@@ -102,7 +102,11 @@ export default function RegistrationScreen() {
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
               >
                 <View style={styles.avatarWrapper}>
-                  <SvgComponent />
+                  {/* <SvgXml xml={ImgTest} width={20} height={20} fill={"black"} /> */}
+                  <TouchableOpacity>
+                    <SvgComponent />
+                    {/* <ImgTest width={25} height={25} /> */}
+                  </TouchableOpacity>
                 </View>
                 <Text style={styles.title}>Реєстрація</Text>
                 <TextInput
@@ -184,8 +188,9 @@ export default function RegistrationScreen() {
               </KeyboardAvoidingView>
             </View>
           </TouchableWithoutFeedback>
-        </ImageBackground>
-      </TouchableWithoutFeedback>
+          {/* </ImageBackground> */}
+        </CustomImgBg>
+      </TouchableOpacity>
     </>
   );
 }
@@ -223,6 +228,14 @@ const styles = StyleSheet.create({
     marginRight: "auto",
     position: "relative",
   },
+
+  // iconContainer: {
+  //   position: "absolute",
+  //   width: 25,
+  //   height: 25,
+  //   bottom: 9,
+  //   left: 105,
+  // },
 
   title: {
     fontFamily: "Roboto_500Medium",
