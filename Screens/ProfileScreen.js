@@ -1,38 +1,29 @@
-import React, { useState } from "react";
-
-import { StyleSheet } from "react-native";
-
+import React, { useContext, useState } from "react";
 import {
-  useFonts,
-  Roboto_400Regular,
-  Roboto_500Medium,
-} from "@expo-google-fonts/roboto";
+  Pressable,
+  StyleSheet,
+  FlatList,
+  Image,
+  Text,
+  View,
+} from "react-native";
 
-import SvgComponent from "../components/SvgComponent";
 import { useNavigation } from "@react-navigation/native";
-
-import { Image, Text, TouchableOpacity, View } from "react-native";
 import { postsScreenArr } from "../data/posts";
-
-import { FlatList } from "react-native";
-import CommentsIcon from "../assets/images/shape.svg";
-import LikesIcon from "../assets/images/thumbs-up.svg";
-import MapIcon from "../assets/images/map-pin.svg";
-
 import CustomImgBg from "../components/CustomImgBg";
+import photo from "../assets/images/userPhoto.jpg";
+import SvgComponentDel from "../assets/images/add-1.svg";
+import SvgComponent from "../assets/images/add-2.svg";
+import LogoutIcon from "../assets/images/log-out.svg";
+import { AuthContext } from "../components/AuthProvider";
+import ListItem from "../components/ListItem";
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
   const [posts, setPosts] = useState(postsScreenArr);
+  const [userPhoto, setUserPhoto] = useState(photo);
+  const { isAuth, setIsAuth } = useContext(AuthContext);
 
-  const [fontsLoaded] = useFonts({
-    Roboto_400Regular,
-    Roboto_500Medium,
-  });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <>
@@ -40,52 +31,42 @@ export default function RegistrationScreen() {
         <CustomImgBg>
           <View style={styles.content}>
             <View style={styles.avatarWrapper}>
-              <TouchableOpacity>
-                <SvgComponent />
-              </TouchableOpacity>
+              {userPhoto && (
+                <Image style={{ borderRadius: 16 }} source={userPhoto} />
+              )}
+              <Pressable
+                onPressOut={
+                  userPhoto
+                    ? () => setUserPhoto(null)
+                    : () => setUserPhoto(photo)
+                }
+              >
+                {userPhoto ? (
+                  <SvgComponentDel
+                    style={{ position: "absolute", bottom: 9, right: -18 }}
+                  />
+                ) : (
+                  <SvgComponent
+                    style={{ position: "absolute", top: 75, right: -18 }}
+                  />
+                )}
+              </Pressable>
             </View>
+            <Pressable
+              style={{ position: "absolute", top: 22, right: 16 }}
+              onPressOut={() => {
+                setIsAuth(false);
+                navigation.navigate("Login");
+              }}
+            >
+              <LogoutIcon />
+            </Pressable>
             <Text style={styles.title}>Natali Romanova</Text>
 
             <View style={styles.listContainer}>
               <FlatList
                 data={posts}
-                renderItem={({ item }) => (
-                  <View style={styles.itemList}>
-                    <Image source={item.img} style={styles.cardImage} />
-                    <Text style={styles.itemPostTitle}>{item.title}</Text>
-                    <View style={styles.itemCard}>
-                      <View style={styles.itemCardInfo}>
-                        <TouchableOpacity
-                          style={styles.wrapper}
-                          onPress={() => navigation.navigate("Коментарі")}
-                        >
-                          <CommentsIcon size={24} color={"#FF6C00"} />
-
-                          <Text style={styles.textStatistic}>
-                            {item.comments}
-                          </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                          style={{ ...styles.wrapper, marginLeft: 24 }}
-                        >
-                          <LikesIcon size={24} color={"#FF6C00"} />
-                          <Text style={styles.textStatistic}>{item.likes}</Text>
-                        </TouchableOpacity>
-                      </View>
-                      <View style={styles.wrapper}>
-                        <MapIcon size={24} color="#BDBDBD" />
-                        <Text
-                          style={{
-                            ...styles.textStatistic,
-                            textDecorationLine: "underline",
-                          }}
-                        >
-                          {item.location}
-                        </Text>
-                      </View>
-                    </View>
-                  </View>
-                )}
+                renderItem={({ item }) => <ListItem item={item} />}
                 keyExtractor={(item) => item.id}
               />
             </View>
@@ -123,6 +104,7 @@ const styles = StyleSheet.create({
     marginTop: -110,
     marginLeft: "auto",
     marginRight: "auto",
+
     position: "relative",
   },
 
@@ -138,53 +120,9 @@ const styles = StyleSheet.create({
   listContainer: {
     // flex: 1,
     flexGrow: 1,
-    paddingHorizontal: 16,
+
     backgroundColor: "#FFFFFF",
     // backgroundColor: "#FFFFFF",
     // alignItems: "center",
-  },
-
-  itemList: {
-    maxWidth: "100%",
-    flexGrow: 1,
-    // justifyContent: "center",
-    // alignItems: "center",
-  },
-  cardImage: {
-    resizeMode: "cover",
-    borderRadius: 8,
-    alignSelf: "center",
-    width: "100%",
-  },
-  itemPostTitle: {
-    marginTop: 8,
-
-    fontSize: 16,
-    lineHeight: 19,
-    color: "#212121",
-    fontFamily: "Roboto_500Medium",
-  },
-  itemCard: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 8,
-    marginBottom: 35,
-  },
-
-  itemCardInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  wrapper: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textStatistic: {
-    marginLeft: 6,
-    fontSize: 16,
-    lineHeight: 19,
-
-    color: "#212121",
   },
 });

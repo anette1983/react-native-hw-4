@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import {
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   TouchableWithoutFeedback,
   TextInput,
   Pressable,
+  Image,
 } from "react-native";
 
 import {
@@ -18,10 +19,14 @@ import {
   Roboto_500Medium,
 } from "@expo-google-fonts/roboto";
 
-import SvgComponent from "../components/SvgComponent";
+import SvgComponentDel from "../assets/images/add-1.svg";
+import SvgComponent from "../assets/images/add-2.svg";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
 import CustomImgBg from "../components/CustomImgBg";
+import photo from "../assets/images/userPhoto.jpg";
+import { ImageBackground } from "react-native";
+import { AuthContext } from "../components/AuthProvider";
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
@@ -29,6 +34,8 @@ export default function RegistrationScreen() {
   const [password, setPassword] = useState("");
   const [isHiddenPassword, setIsHiddenPassword] = useState(true);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
+  const [userPhoto, setUserPhoto] = useState(null);
+  const { isAuth, setIsAuth } = useContext(AuthContext);
   const loginHandler = (text) => setLogin(text);
   const passwordHandler = (text) => setPassword(text);
   const emailHandler = (text) => setEmail(text);
@@ -57,6 +64,7 @@ export default function RegistrationScreen() {
     );
     setIsShownKeyboard(false);
     Keyboard.dismiss();
+    setIsAuth(true);
     navigation.navigate("Home", { screen: "PostsScreen" });
     reset();
   };
@@ -81,16 +89,16 @@ export default function RegistrationScreen() {
 
   return (
     <>
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         style={styles.mainContainer}
         onPress={onPressWithoutFeedback}
       >
-        {/* <ImageBackground
+        <ImageBackground
           source={require("../assets/images/bg-image.png")}
           style={styles.image}
           resizeMode="cover"
-        > */}
-        <CustomImgBg>
+        >
+          {/* <CustomImgBg> */}
           <TouchableWithoutFeedback onPress={onPressWithoutFeedback}>
             <View
               style={{
@@ -102,11 +110,26 @@ export default function RegistrationScreen() {
                 behavior={Platform.OS == "ios" ? "padding" : "height"}
               >
                 <View style={styles.avatarWrapper}>
-                  {/* <SvgXml xml={ImgTest} width={20} height={20} fill={"black"} /> */}
-                  <TouchableOpacity>
-                    <SvgComponent />
-                    {/* <ImgTest width={25} height={25} /> */}
-                  </TouchableOpacity>
+                  {userPhoto && (
+                    <Image style={{ borderRadius: 16 }} source={userPhoto} />
+                  )}
+                  <Pressable
+                    onPressOut={
+                      userPhoto
+                        ? () => setUserPhoto(null)
+                        : () => setUserPhoto(photo)
+                    }
+                  >
+                    {userPhoto ? (
+                      <SvgComponentDel
+                        style={{ position: "absolute", bottom: 9, right: -18 }}
+                      />
+                    ) : (
+                      <SvgComponent
+                        style={{ position: "absolute", top: 75, right: -18 }}
+                      />
+                    )}
+                  </Pressable>
                 </View>
                 <Text style={styles.title}>Реєстрація</Text>
                 <TextInput
@@ -188,9 +211,9 @@ export default function RegistrationScreen() {
               </KeyboardAvoidingView>
             </View>
           </TouchableWithoutFeedback>
-          {/* </ImageBackground> */}
-        </CustomImgBg>
-      </TouchableOpacity>
+        </ImageBackground>
+        {/* </CustomImgBg> */}
+      </TouchableWithoutFeedback>
     </>
   );
 }

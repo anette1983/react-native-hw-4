@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -12,14 +12,9 @@ import {
   ImageBackground,
 } from "react-native";
 
-// import {
-//   useFonts,
-//   Roboto_400Regular,
-//   Roboto_500Medium,
-// } from "@expo-google-fonts/roboto";
 import { useNavigation } from "@react-navigation/native";
-import { Button } from "react-native";
 import { TouchableOpacity } from "react-native";
+import { AuthContext } from "../components/AuthProvider";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -27,7 +22,7 @@ export default function LoginScreen() {
   const [isHiddenPassword, setIsHiddenPassword] = useState(true);
   const [isShownKeyboard, setIsShownKeyboard] = useState(false);
   const navigation = useNavigation();
-
+  const { isAuth, setIsAuth } = useContext(AuthContext);
   const passwordHandler = (text) => setPassword(text);
   const emailHandler = (text) => setEmail(text);
 
@@ -51,6 +46,7 @@ export default function LoginScreen() {
     console.log("Login form data: ", `email: ${email}, password: ${password}`);
     setIsShownKeyboard(false);
     Keyboard.dismiss();
+    setIsAuth(true);
     navigation.navigate("Home", { screen: "PostsScreen" });
     reset();
   };
@@ -58,15 +54,6 @@ export default function LoginScreen() {
   const togglePassword = () => {
     setIsHiddenPassword((prev) => !prev);
   };
-
-  // const [fontsLoaded] = useFonts({
-  //   Roboto_400Regular,
-  //   Roboto_500Medium,
-  // });
-
-  // if (!fontsLoaded) {
-  //   return null;
-  // }
 
   return (
     <>
@@ -157,13 +144,6 @@ export default function LoginScreen() {
                     </Text>
                   </Text>
                 </TouchableOpacity>
-                {/* <Text style={styles.linkTitle}>
-                  <Pressable
-                    onPress={() => navigation.navigate("Registration")}
-                  >
-                    <Text style={styles.linkUnderlined}>Зареєструватися</Text>
-                  </Pressable>
-                </Text> */}
               </KeyboardAvoidingView>
             </View>
           </TouchableWithoutFeedback>
@@ -252,11 +232,5 @@ const styles = StyleSheet.create({
     textDecorationStyle: "solid",
     textDecorationColor: "#1b4371",
   },
-  // homeIndicator: {
-  //   width: 134,
-  //   height: 5,
-  //   borderRadius: 100,
-  //   background: "black",
-  //   marginBottom: 8,
-  // },
+
 });
