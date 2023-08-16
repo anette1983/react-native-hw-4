@@ -2,6 +2,8 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import PostsScreen from "../Screens/PostsScreen";
 import CreatePostsScreen from "../Screens/CreatePostsScreen";
 import ProfileScreen from "../Screens/ProfileScreen";
+import MapScreen from "../Screens/MapScreen";
+import CameraScreen from "../Screens/CameraScreen";
 
 import { View, Pressable } from "react-native";
 
@@ -115,6 +117,26 @@ export const BottomTabNavigator = () => {
           component={ProfileScreen}
           options={{
             headerShown: false,
+            tabBarIcon: ({ focused, size, color }) => (
+              <UserIcon size={size} color={focused ? "#FF6C00" : color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="Map"
+          component={MapScreen}
+          options={{
+            headerShown: true,
+            tabBarIcon: ({ focused, size, color }) => (
+              <UserIcon size={size} color={focused ? "#FF6C00" : color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="Camera"
+          component={CameraScreen}
+          options={{
+            headerShown: true,
             tabBarIcon: ({ focused, size, color }) => (
               <UserIcon size={size} color={focused ? "#FF6C00" : color} />
             ),

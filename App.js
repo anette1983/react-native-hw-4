@@ -3,7 +3,7 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { useRoute } from "./routes";
-import { AuthStateProvider} from "./components/AuthProvider";
+import { AuthStateProvider } from "./components/AuthProvider";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -25,7 +25,7 @@ export default function App() {
     return null;
   }
 
-  const routing = useRoute(null);
+  const routing = useRoute(true);
 
   return (
     <AuthStateProvider>
