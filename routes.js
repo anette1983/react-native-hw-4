@@ -5,11 +5,9 @@ import HomeScreen from "./Screens/HomeScreen";
 import { BottomTabNavigator } from "./components/BottomTabNavigator";
 import { createStackNavigator } from "@react-navigation/stack";
 
-
 const MainStack = createStackNavigator();
 
 export const useRoute = (isAuth) => {
- 
   if (!isAuth) {
     return (
       <MainStack.Navigator
@@ -33,5 +31,5 @@ export const useRoute = (isAuth) => {
       </MainStack.Navigator>
     );
   }
-  return <BottomTabNavigator style={{ flex: 1 }} />;
+  return <BottomTabNavigator />;
 };
