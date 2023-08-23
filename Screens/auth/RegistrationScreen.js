@@ -19,14 +19,14 @@ import {
   Roboto_500Medium,
 } from "@expo-google-fonts/roboto";
 
-import SvgComponentDel from "../assets/images/add-1.svg";
-import SvgComponent from "../assets/images/add-2.svg";
+import SvgComponentDel from "../../assets/images/add-1.svg";
+import SvgComponent from "../../assets/images/add-2.svg";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
-import CustomImgBg from "../components/CustomImgBg";
-import photo from "../assets/images/userPhoto.jpg";
+import CustomImgBg from "../../components/CustomImgBg";
+import photo from "../../assets/images/userPhoto.jpg";
 import { ImageBackground } from "react-native";
-import { AuthContext } from "../components/AuthProvider";
+import { AuthContext } from "../../components/AuthProvider";
 
 export default function RegistrationScreen() {
   const [login, setLogin] = useState("");
@@ -65,7 +65,7 @@ export default function RegistrationScreen() {
     setIsShownKeyboard(false);
     Keyboard.dismiss();
     setIsAuth(true);
-    navigation.navigate("Home", { screen: "PostsScreen" });
+    navigation.navigate("Home", { screen: "DefaultScreenPosts" });
     reset();
   };
 
@@ -94,7 +94,7 @@ export default function RegistrationScreen() {
         onPress={onPressWithoutFeedback}
       >
         <ImageBackground
-          source={require("../assets/images/bg-image.png")}
+          source={require("../../assets/images/bg-image.png")}
           style={styles.image}
           resizeMode="cover"
         >

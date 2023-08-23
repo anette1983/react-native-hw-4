@@ -1,35 +1,52 @@
 export const postsScreenArr = [
   {
     id: 1,
-    img: "https://faktypro.com.ua/uploads/img/cikavi-fakti-pro-lisi-i-dereva.jpg",
+    img: "https://forrest.if.ua/wp-content/uploads/2021/06/slide2-scaled.jpg",
     title: "Ліс",
     location: "Ukraine",
     comments: 8,
     likes: 153,
+    coords: {
+      latitude: 48.16356661063877,
+      longitude: 23.29806148904276,
+    },
   },
   {
     id: 2,
-    img: "https://faktypro.com.ua/uploads/img/cikavi-fakti-pro-lisi-i-dereva.jpg",
+    img: "https://images.unsplash.com/photo-1581266399843-9ed61499a5cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80",
     title: "Захід на Чорному морі",
     location: "Ukraine",
     comments: 3,
     likes: 200,
+    coords: {
+      latitude: 48.1630215,
+      longitude: 23.2959379,
+    },
   },
+
   {
     id: 3,
-    img: "https://faktypro.com.ua/uploads/img/cikavi-fakti-pro-lisi-i-dereva.jpg",
+    img: "https://images.unsplash.com/photo-1512034796900-7dc9baad088c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=870&q=80",
     title: "Старий будиночок у Венеції",
     location: "Italy",
     comments: 50,
     likes: 200,
+    coords: {
+      latitude: 48.52731905022333,
+      longitude: 22.8705259117282,
+    },
   },
   {
     id: 4,
     img: "https://faktypro.com.ua/uploads/img/cikavi-fakti-pro-lisi-i-dereva.jpg",
-    title: "Старий будиночок у Венеції",
-    location: "Italy",
+    title: "Сосновий ліс",
+    location: "Ukraine",
     comments: 50,
     likes: 200,
+    coords: {
+      latitude: 48.5241797,
+      longitude: 22.8631192,
+    },
   },
 ];
 

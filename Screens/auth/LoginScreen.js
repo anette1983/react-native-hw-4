@@ -14,7 +14,7 @@ import {
 
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native";
-import { AuthContext } from "../components/AuthProvider";
+import { AuthContext } from "../../components/AuthProvider";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -47,7 +47,7 @@ export default function LoginScreen() {
     setIsShownKeyboard(false);
     Keyboard.dismiss();
     setIsAuth(true);
-    navigation.navigate("Home", { screen: "PostsScreen" });
+    navigation.navigate("Home", { screen: "DefaultScreenPosts" });
     reset();
   };
 
@@ -62,7 +62,7 @@ export default function LoginScreen() {
         onPress={onPressWithoutFeedback}
       >
         <ImageBackground
-          source={require("../assets/images/bg-image.png")}
+          source={require("../../assets/images/bg-image.png")}
           style={styles.image}
           resizeMode="cover"
         >
@@ -232,5 +232,4 @@ const styles = StyleSheet.create({
     textDecorationStyle: "solid",
     textDecorationColor: "#1b4371",
   },
-
 });

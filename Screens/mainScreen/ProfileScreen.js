@@ -9,21 +9,20 @@ import {
 } from "react-native";
 
 import { useNavigation } from "@react-navigation/native";
-import { postsScreenArr } from "../data/posts";
-import CustomImgBg from "../components/CustomImgBg";
-import photo from "../assets/images/userPhoto.jpg";
-import SvgComponentDel from "../assets/images/add-1.svg";
-import SvgComponent from "../assets/images/add-2.svg";
-import LogoutIcon from "../assets/images/log-out.svg";
-import { AuthContext } from "../components/AuthProvider";
-import ListItem from "../components/ListItem";
+import { postsScreenArr } from "../../data/posts";
+import CustomImgBg from "../../components/CustomImgBg";
+import photo from "../../assets/images/userPhoto.jpg";
+import SvgComponentDel from "../../assets/images/add-1.svg";
+import SvgComponent from "../../assets/images/add-2.svg";
+import LogoutIcon from "../../assets/images/log-out.svg";
+import { AuthContext } from "../../components/AuthProvider";
+import ListItem from "../../components/ListItem";
 
 export default function RegistrationScreen() {
   const navigation = useNavigation();
   const [posts, setPosts] = useState(postsScreenArr);
   const [userPhoto, setUserPhoto] = useState(photo);
   const { isAuth, setIsAuth } = useContext(AuthContext);
-
 
   return (
     <>

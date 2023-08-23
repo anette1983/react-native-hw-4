@@ -7,8 +7,11 @@ import { StyleSheet } from "react-native";
 import CommentsIcon from "../assets/images/shape.svg";
 import LikesIcon from "../assets/images/thumbs-up.svg";
 import MapIcon from "../assets/images/map-pin.svg";
+import { useNavigation } from "@react-navigation/native";
 
 const ListItem = ({ item }) => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.listItem}>
       <Image source={{ uri: item.img }} style={styles.cardImage} />
@@ -18,7 +21,9 @@ const ListItem = ({ item }) => {
           <TouchableOpacity
             style={styles.wrapper}
             onPress={() => {
-              //   navigation.navigate("Коментарі")
+              navigation.navigate("Comments");
+              // navigation.navigate("Comments", { screen: "CommentsScreen" });
+              // navigateOnPress();
             }}
           >
             <CommentsIcon size={24} color={"#FF6C00"} />
@@ -30,7 +35,14 @@ const ListItem = ({ item }) => {
             <Text style={styles.textStatistic}>{item.likes}</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.wrapper}>
+        <TouchableOpacity
+          style={styles.wrapper}
+          onPress={() => {
+            navigation.navigate("Maps", {
+              coords: item.coords,
+            });
+          }}
+        >
           <MapIcon size={24} color="#BDBDBD" />
           <Text
             style={{
@@ -40,7 +52,7 @@ const ListItem = ({ item }) => {
           >
             {item.location}
           </Text>
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

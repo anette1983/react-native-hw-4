@@ -11,84 +11,90 @@ import {
   ScrollView,
 } from "react-native";
 // import CameraIcon from "../assets/images/camera_alt-black.svg";
-import MapIcon from "../assets/images/map-pin.svg";
-import DelIcon from "../assets/images/trash.svg";
-import CameraComp from "./CameraComp";
+import MapIcon from "../../assets/images/map-pin.svg";
+import DelIcon from "../../assets/images/trash.svg";
+import CameraComp from "../../components/CameraComponent";
 import { useContext, useEffect, useState } from "react";
 import { Image } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useNavigation } from "@react-navigation/native";
 import * as Location from "expo-location";
-import { GlobalContext } from "../components/GlobalStateProvider";
+import { GlobalContext } from "../../components/GlobalStateProvider";
 
 export default function CreatePostsScreen() {
   const [photo, setPhoto] = useState("");
   const [title, setTitle] = useState("");
   const [locationName, setLocationName] = useState("");
-  const [currentLocation, setCurrentLocation] = useState(null);
   const navigation = useNavigation();
   const { setIsRefetchedPosts } = useContext(GlobalContext);
+  const [shouldRestartCamera, setShouldRestartCamera] = useState(false);
 
-  const addPost = (newPost) => {
-    setPosts([...posts, newPost]);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      // Reset the photo state when the screen is focused
+      setPhoto("");
+      setShouldRestartCamera(true); 
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const resetForm = () => {
+    setTitle("");
+    setLocationName("");
+    setPhoto("");
   };
-
-  // const handlePublish = () => {
-  //   const newPost = {
-  //     id: posts.length + 1, // или вы можете использовать другой метод генерации id
-  //     img: require("../assets/images/your-image.jpg"), // путь к изображению
-  //     title: title,
-  //     location: location,
-  //     comments: 0, // или начальное количество комментариев
-  //     likes: 0, // или начальное количество лайков
-  //   };
-
-  //   addPost(newPost);
-  //   // ... здесь также может быть логика для сброса формы
-  // };
-
   const handlePublish = async () => {
     if (!photo || !title || !locationName) {
       alert("Всі поля мають бути заповнені!");
       return;
     }
     Keyboard.dismiss();
-    const newPost = {
-      id: Date.now().toString(),
-      img: photo,
-      title: title,
-      location: locationName,
-      comments: 0,
-      likes: 0,
-    };
 
-    // Получение текущих данных из AsyncStorage
-    const existingPosts = await AsyncStorage.getItem("posts");
-    const parsedExistingPosts = existingPosts ? JSON.parse(existingPosts) : [];
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+      // setErrorMsg("Permission to access location was denied");
+      return;
+    }
 
-    // Обновление данных и сохранение обратно в AsyncStorage
-    const updatedPosts = [...parsedExistingPosts, newPost];
-    await AsyncStorage.setItem("posts", JSON.stringify(updatedPosts));
-    // await AsyncStorage.setItem("posts", JSON.stringify([]));
     try {
       let location = await Location.getCurrentPositionAsync({});
       const coords = {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       };
-      setCurrentLocation(coords);
-      navigation.navigate("Публікації", { coords });
+      const newPost = {
+        id: Date.now().toString(),
+        img: photo,
+        title: title,
+        location: locationName,
+        comments: 0,
+        likes: 0,
+        coords,
+      };
+
+      console.log("publishing1");
+      // Получение текущих данных из AsyncStorage
+      const existingPosts = await AsyncStorage.getItem("posts");
+      const parsedExistingPosts = existingPosts
+        ? JSON.parse(existingPosts)
+        : [];
+
+      // Обновление данных и сохранение обратно в AsyncStorage
+      const updatedPosts = [...parsedExistingPosts, newPost];
+      await AsyncStorage.setItem("posts", JSON.stringify(updatedPosts));
+
       // setErrorMsg("");
     } catch (error) {
       // setErrorMsg("Error getting location");
       console.log(error);
     }
 
-    // Очистка формы
-    setTitle("");
-    setLocationName("");
-    setPhoto("");
+    navigation.navigate("Публікації");
+
+    resetForm();
 
     setIsRefetchedPosts((prev) => !prev);
     console.log("publishing");
@@ -120,9 +126,6 @@ export default function CreatePostsScreen() {
           // ContainerStyle={styles.contentContainer}
         >
           <View style={styles.imgWrapper}>
-            {/* <Pressable style={styles.btn}>
-              <CameraIcon />
-            </Pressable> */}
             {photo ? (
               <>
                 <Image
@@ -135,11 +138,18 @@ export default function CreatePostsScreen() {
                   }}
                 />
                 <Pressable
-                  style={{
-                    ...styles.btn,
-                    backgroundColor: "rgba(255, 255, 255, 0.30)",
-                  }}
-                  activeOpacity={0.7}
+                  // style={{
+                  //   ...styles.btn,
+                  //   backgroundColor: "rgba(255, 255, 255, 0.30)",
+                  // }}
+                  style={({ pressed }) => [
+                    {
+                      backgroundColor: pressed
+                        ? "#d3d3d3"
+                        : "rgba(255, 255, 255, 0.30)",
+                    },
+                    styles.btn,
+                  ]}
                   onPress={() => {
                     setPhoto("");
                   }}
@@ -148,7 +158,11 @@ export default function CreatePostsScreen() {
                 </Pressable>
               </>
             ) : (
-              <CameraComp photo={photo} setPhoto={setPhoto} />
+              <CameraComp
+                setPhoto={setPhoto}
+                shouldRestart={shouldRestartCamera}
+                setShouldRestartCamera={setShouldRestartCamera}
+              />
             )}
           </View>
 
@@ -157,7 +171,6 @@ export default function CreatePostsScreen() {
           ) : (
             <Text style={styles.imgText}>Завантажте фото</Text>
           )}
-          {/* Тут буде умова */}
 
           <TouchableWithoutFeedback onPress={keyboardHide}>
             <View style={styles.formContainer}>
@@ -195,7 +208,7 @@ export default function CreatePostsScreen() {
                   title={"Publish"}
                   style={({ pressed }) => [
                     {
-                      backgroundColor: pressed ? "#f6f6f6e0" : "#F6F6F6",
+                      backgroundColor: pressed ? "#d3d3d3" : "#F6F6F6",
                     },
                     styles.button,
                   ]}
@@ -219,7 +232,7 @@ export default function CreatePostsScreen() {
               marginTop: 120,
               marginBottom: 22,
             }}
-            onPress={() => {}}
+            onPress={resetForm}
           >
             <DelIcon />
           </TouchableOpacity>
@@ -252,8 +265,8 @@ const styles = StyleSheet.create({
     display: "flex",
     // alignItems: "center",
     justifyContent: "center",
-    // width: "100%",
-    // height: 240,
+    width: "100%",
+    height: 240,
     position: "relative",
     marginBottom: 8,
     backgroundColor: "#F6F6F6",

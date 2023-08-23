@@ -1,14 +1,22 @@
 import { useContext, useEffect, useState } from "react";
-import { View } from "react-native";
-import UserInfo from "../components/UserInfo";
-import { postsScreenArr } from "../data/posts";
+import { Button, View } from "react-native";
+import UserInfo from "../../components/UserInfo";
+import { postsScreenArr } from "../../data/posts";
 import { StyleSheet } from "react-native";
 import { FlatList } from "react-native";
-import ListItem from "../components/ListItem";
+import ListItem from "../../components/ListItem";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { GlobalContext } from "../components/GlobalStateProvider";
+import { GlobalContext } from "../../components/GlobalStateProvider";
+import { useNavigation } from "@react-navigation/native";
 
-export default function PostsScreen({ route }) {
+export default function DefaultScreenPosts() {
+  // const navigation = useNavigation();
+  // const [coords, setCoords] = useState({});
+
+  // console.log("routeParams", route.params);
+  // if (route.params) {
+  //   setCoords(route.params);
+  // }
   const [posts, setPosts] = useState(postsScreenArr);
   const { isRefetchedPosts } = useContext(GlobalContext);
   // const [posts, setPosts] = useState([]);

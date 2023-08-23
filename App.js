@@ -1,9 +1,9 @@
 import "react-native-gesture-handler";
-import React from "react";
+import React, { useContext } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 
 import { useRoute } from "./routes";
-import { AuthStateProvider } from "./components/AuthProvider";
+import { AuthContext, AuthStateProvider } from "./components/AuthProvider";
 
 import { StatusBar } from "expo-status-bar";
 
@@ -16,6 +16,8 @@ import {
 import { GlobalStateProvider } from "./components/GlobalStateProvider";
 
 export default function App() {
+  // const { isAuth } = useContext(AuthContext);
+
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
     Roboto_500Medium,
@@ -26,7 +28,8 @@ export default function App() {
     return null;
   }
 
-  const routing = useRoute(true);
+  // const routing = useRoute(isAuth);
+  const routing = useRoute(false);
 
   return (
     <GlobalStateProvider>
