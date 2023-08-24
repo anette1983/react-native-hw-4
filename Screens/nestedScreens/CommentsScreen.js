@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   Image,
-  Text,
   FlatList,
   TouchableOpacity,
   Alert,
@@ -34,7 +33,6 @@ const CommentsScreen = () => {
       return;
     }
     Alert.alert(`Коментар успішно надіслано!`);
-    console.log(comment);
     setComment("");
     setIsShownKeyboard(false);
     Keyboard.dismiss();
@@ -63,8 +61,6 @@ const CommentsScreen = () => {
         >
           <KeyboardAvoidingView
             behavior={Platform.OS == "ios" ? "padding" : "height"}
-            // keyboardVerticalOffset={100}
-            // style={{ flex: 1 }}
           >
             <TextInput
               value={comment}
@@ -94,8 +90,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     backgroundColor: "#FFFFFF",
     maxWidth: "100%",
-
-    // alignItems: "center",
   },
   imgWrapper: {
     marginVertical: 32,
@@ -157,8 +151,6 @@ const styles = StyleSheet.create({
     width: 34,
     height: 34,
     borderRadius: 50,
-    // top: -46,
-    // left: 30,
     bottom: 24,
     right: 8,
   },

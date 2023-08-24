@@ -252,14 +252,6 @@ const styles = StyleSheet.create({
     position: "relative",
   },
 
-  // iconContainer: {
-  //   position: "absolute",
-  //   width: 25,
-  //   height: 25,
-  //   bottom: 9,
-  //   left: 105,
-  // },
-
   title: {
     fontFamily: "Roboto_500Medium",
     color: "#212121",

@@ -1,20 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Text,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  Dimensions,
-  Pressable,
-} from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 import { Camera } from "expo-camera";
 import * as MediaLibrary from "expo-media-library";
-import CameraIcon from "../assets/images/camera_alt-black.svg";
 import { FontAwesome } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 
-export default function CameraComp({ setPhoto, shouldRestart, setShouldRestartCamera }) {
+export default function CameraComp({
+  setPhoto,
+  shouldRestart,
+  setShouldRestartCamera,
+}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -55,25 +49,9 @@ export default function CameraComp({ setPhoto, shouldRestart, setShouldRestartCa
     );
   }
 
-  // if (!permission.granted) {
-  //   // Camera permissions are not granted yet
-  //   return (
-  //     <View style={styles.container}>
-  //       <Text style={{ textAlign: "center" }}>
-  //         We need your permission to show the camera
-  //       </Text>
-  //       <Button onPress={requestPermission} title="grant permission" />
-  //     </View>
-  //   );
-  // }
-
   const onCameraReady = () => {
     setIsCameraReady(true);
   };
-  // const cancelPreview = async () => {
-  //   await cameraRef.current.resumePreview();
-  //   setIsPreview(false);
-  // };
 
   const takePhoto = async () => {
     if (cameraRef.current) {
@@ -85,19 +63,11 @@ export default function CameraComp({ setPhoto, shouldRestart, setShouldRestartCa
           fixOrientation: true,
         };
 
-        // const { uri } = await cameraRef.takePictureAsync();
         const data = await cameraRef.current.takePictureAsync(options);
         const source = data.uri;
         setPhoto(source);
-
-        // if (source) {
-        //   await cameraRef.current.pausePreview();
-        //   setIsPreview(true);
-        // }
-        // await MediaLibrary.createAssetAsync(uri);
         await MediaLibrary.createAssetAsync(source);
         console.log("Picture saved successfully.", source);
-        // cancelPreview();
       } catch (error) {
         console.error("Error while taking or saving picture:", error);
       }
@@ -123,50 +93,20 @@ export default function CameraComp({ setPhoto, shouldRestart, setShouldRestartCa
 
   return (
     <>
-      {/* <SafeAreaView style={styles.container}> */}
       <View style={styles.container}>
         <Camera
           style={styles.camera}
           // ratio={ratio}
-          // ratio={"9:16"}
           // pictureSize=""
           type={type}
           autoFocus
-          // ref={setCameraRef}
           ref={cameraRef}
           onCameraReady={onCameraReady}
           onMountError={(error) => {
             console.log("camera error", error);
           }}
         >
-          <View style={styles.photoView}>
-            {/* <TouchableOpacity
-            style={styles.flipContainer}
-            disabled={!isCameraReady}
-            onPress={() => {
-              setType(
-                type === Camera.Constants.Type.back
-                  ? Camera.Constants.Type.front
-                  : Camera.Constants.Type.back
-              );
-            }}
-          >
-            <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
-              Flip
-            </Text>
-          </TouchableOpacity> */}
-            {/* <TouchableOpacity
-                style={styles.button}
-                activeOpacity={0.7}
-                disabled={!isCameraReady}
-                onPress={takePhoto}
-              >
-                <View style={styles.takePhotoOut}>
-                  <View style={styles.takePhotoInner}></View>
-                </View>
-              </TouchableOpacity> */}
-            {renderCaptureControl()}
-          </View>
+          <View style={styles.photoView}>{renderCaptureControl()}</View>
         </Camera>
       </View>
     </>
@@ -185,9 +125,8 @@ const styles = StyleSheet.create({
     height: "100%",
     // aspectRatio: 3 / 4,
     justifyContent: "center",
-    // borderRadius: 8,
-    // overflow: "hidden",
-    // aspectRatio: 3 / 4,
+    borderRadius: 8,
+    overflow: "hidden",
   },
   photoView: {
     backgroundColor: "transparent",

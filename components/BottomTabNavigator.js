@@ -1,20 +1,14 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import PostsScreen from "../Screens/mainScreen/PostsScreen";
-
 import CreatePostsScreen from "../Screens/mainScreen/CreatePostsScreen";
 import ProfileScreen from "../Screens/mainScreen/ProfileScreen";
-import MapScreen from "../Screens/nestedScreens/MapScreen";
-import CameraScreen from "../Screens/CameraScreen";
-
 import { View, Pressable } from "react-native";
-
 import LogoutIcon from "../assets/images/log-out.svg";
 import AddIcon from "../assets/images/union.svg";
 import UserIcon from "../assets/images/user.svg";
 import GridIcon from "../assets/images/grid.svg";
 import BackIcon from "../assets/images/arrow-left.svg";
 import { useNavigation } from "@react-navigation/native";
-import { AuthContext } from "../components/AuthProvider";
+import { AuthContext } from "./AuthProvider";
 import { useContext } from "react";
 import DefaultScreenPosts from "../Screens/nestedScreens/DefaultScreenPosts";
 
@@ -22,8 +16,10 @@ const Tabs = createBottomTabNavigator();
 
 export const BottomTabNavigator = () => {
   const navigation = useNavigation();
+  const { isAuth, setIsAuth } = useContext(AuthContext);
 
   const screenOptions = ({ route }) => ({
+    headerShown: true,
     headerTitleAlign: "center",
     headerTitleStyle: {
       fontFamily: "Roboto_500Medium",
@@ -41,7 +37,6 @@ export const BottomTabNavigator = () => {
       // backdropFilter: "blur(13.591408729553223px)",
     },
     tabBarShowLabel: false,
-    // headerShadowVisible: false,
     tabBarStyle: {
       height: 71,
       paddingTop: 17,
@@ -71,29 +66,29 @@ export const BottomTabNavigator = () => {
       >
         <Tabs.Screen
           name="Публікації"
-          // component={DefaultScreenPosts}
-          component={PostsScreen}
+          component={DefaultScreenPosts}
           options={{
-            headerShown: false,
+            headerTitle: "Публікації",
+            headerLeft: null,
             tabBarIcon: ({ focused, size, color }) => (
               <GridIcon color={focused ? "#FF6C00" : color} />
             ),
-            // headerRight: () => {
-            //   return (
-            //     <Pressable
-            //       style={{ marginRight: 16 }}
-            //       onPressOut={() => {
-            //         setIsAuth(false);
-            //         navigation.navigate("Login");
-            //       }}
-            //     >
-            //       <LogoutIcon />
-            //     </Pressable>
-            //   );
-            // },
-            // tabBarIcon: ({ focused, size, color }) => (
-            //   <GridIcon color={focused ? "#FF6C00" : color} />
-            // ),
+            headerRight: () => {
+              return (
+                <Pressable
+                  style={{ marginRight: 16 }}
+                  onPressOut={() => {
+                    setIsAuth(false);
+                    navigation.navigate("Login");
+                  }}
+                >
+                  <LogoutIcon />
+                </Pressable>
+              );
+            },
+            tabBarIcon: ({ focused, size, color }) => (
+              <GridIcon color={focused ? "#FF6C00" : color} />
+            ),
           }}
         />
         <Tabs.Screen
@@ -118,9 +113,8 @@ export const BottomTabNavigator = () => {
               );
             },
             tabBarStyle: { display: "none" },
-            // tabBarLabel: "Створити публікацію",
-
             title: "Створити публікацію",
+            headerTitle: "Створити публікацію",
           }}
         />
         <Tabs.Screen
@@ -128,6 +122,8 @@ export const BottomTabNavigator = () => {
           component={ProfileScreen}
           options={{
             headerShown: false,
+
+            headerStyle: { display: "none" },
             tabBarIcon: ({ focused, size, color }) => (
               <UserIcon size={size} color={focused ? "#FF6C00" : color} />
             ),

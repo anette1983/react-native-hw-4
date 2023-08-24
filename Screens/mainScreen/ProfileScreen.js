@@ -87,7 +87,6 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     backgroundColor: "#fff",
-    // paddingBottom: 43,
     paddingBottom: 214,
     paddingTop: 50,
     paddingHorizontal: 16,
@@ -117,11 +116,7 @@ const styles = StyleSheet.create({
   },
 
   listContainer: {
-    // flex: 1,
     flexGrow: 1,
-
     backgroundColor: "#FFFFFF",
-    // backgroundColor: "#FFFFFF",
-    // alignItems: "center",
   },
 });

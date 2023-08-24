@@ -1,9 +1,9 @@
-import { BottomTabNavigator } from "../../components/BottomTabNavigator";
+import PostsScreen from "./PostScreen";
 
 export default function HomeScreen() {
   return (
     <>
-      <BottomTabNavigator />
+      <PostsScreen />
     </>
   );
 }

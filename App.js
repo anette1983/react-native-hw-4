@@ -15,8 +15,10 @@ import {
 } from "@expo-google-fonts/roboto";
 import { GlobalStateProvider } from "./components/GlobalStateProvider";
 
+
 export default function App() {
-  // const { isAuth } = useContext(AuthContext);
+  // const { isAuth, setIsAuth } = useContext(AuthContext);
+  // console.log("setIsAuth in App", isAuth);
 
   const [fontsLoaded] = useFonts({
     Roboto_400Regular,
@@ -32,13 +34,14 @@ export default function App() {
   const routing = useRoute(false);
 
   return (
-    <GlobalStateProvider>
-      <AuthStateProvider>
+    <AuthStateProvider>
+      <GlobalStateProvider>
         <NavigationContainer>
           {routing}
+
           <StatusBar style="auto" />
         </NavigationContainer>
-      </AuthStateProvider>
-    </GlobalStateProvider>
+      </GlobalStateProvider>
+    </AuthStateProvider>
   );
 }

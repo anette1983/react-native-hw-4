@@ -10,7 +10,6 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-// import CameraIcon from "../assets/images/camera_alt-black.svg";
 import MapIcon from "../../assets/images/map-pin.svg";
 import DelIcon from "../../assets/images/trash.svg";
 import CameraComp from "../../components/CameraComponent";
@@ -32,9 +31,8 @@ export default function CreatePostsScreen() {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("focus", () => {
-      // Reset the photo state when the screen is focused
       setPhoto("");
-      setShouldRestartCamera(true); 
+      setShouldRestartCamera(true);
     });
 
     return unsubscribe;
@@ -75,14 +73,12 @@ export default function CreatePostsScreen() {
         coords,
       };
 
-      console.log("publishing1");
-      // Получение текущих данных из AsyncStorage
+
       const existingPosts = await AsyncStorage.getItem("posts");
       const parsedExistingPosts = existingPosts
         ? JSON.parse(existingPosts)
         : [];
 
-      // Обновление данных и сохранение обратно в AsyncStorage
       const updatedPosts = [...parsedExistingPosts, newPost];
       await AsyncStorage.setItem("posts", JSON.stringify(updatedPosts));
 
@@ -117,14 +113,8 @@ export default function CreatePostsScreen() {
 
   return (
     <ScrollView>
-      <TouchableWithoutFeedback
-        onPress={keyboardHide}
-        // style={styles.container}
-      >
-        <View
-          style={styles.container}
-          // ContainerStyle={styles.contentContainer}
-        >
+      <TouchableWithoutFeedback onPress={keyboardHide}>
+        <View style={styles.container}>
           <View style={styles.imgWrapper}>
             {photo ? (
               <>
@@ -138,10 +128,6 @@ export default function CreatePostsScreen() {
                   }}
                 />
                 <Pressable
-                  // style={{
-                  //   ...styles.btn,
-                  //   backgroundColor: "rgba(255, 255, 255, 0.30)",
-                  // }}
                   style={({ pressed }) => [
                     {
                       backgroundColor: pressed
@@ -257,13 +243,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 22,
     backgroundColor: "#FFFFFF",
-
-    // justifyContent: "center",
   },
 
   imgWrapper: {
     display: "flex",
-    // alignItems: "center",
     justifyContent: "center",
     width: "100%",
     height: 240,
@@ -275,34 +258,16 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#E8E8E8",
   },
-  //   btn: {
-  //     width: 60,
-  //     height: 60,
-  //     backgroundColor: "#FFFFFF",
 
-  //     color: "#BDBDBD",
-
-  //     borderRadius: 30,
-  //     padding: 18,
-  //   },
   btn: {
     display: "flex",
     alignSelf: "center",
     position: "absolute",
-    // top: "50%",
-    // left: "50%",
-    // transform: [{ translate: "-50%" }],
-
     width: 60,
     height: 60,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    // padding: 18,
-    // backgroundColor: "#FFFFFF",
-
-    // color: "#BDBDBD",
-
     borderRadius: 30,
   },
   imgText: {
@@ -311,9 +276,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 32,
   },
-  formContainer: {
-    // flex: 3,
-  },
+
   button: {
     justifyContent: "center",
     alignItems: "center",
@@ -323,9 +286,6 @@ const styles = StyleSheet.create({
 
     fontSize: 16,
     borderRadius: 100,
-
-    // marginTop: 32,
-    // marginBottom: 120,
   },
   buttonText: {
     fontFamily: "Roboto_400Regular",
@@ -336,13 +296,8 @@ const styles = StyleSheet.create({
   input: {
     width: "100%",
     height: 50,
-
     paddingTop: 16,
     paddingBottom: 16,
-    // fontFamily: "Roboto_400Regular",
-    // fontStyle: "normal",
-    // fontSize: 16,
-    // lineHeight: 19,
     color: "#212121",
     fontFamily: "Roboto_500Medium",
     fontSize: 16,

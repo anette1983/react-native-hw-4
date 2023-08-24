@@ -22,8 +22,6 @@ const ListItem = ({ item }) => {
             style={styles.wrapper}
             onPress={() => {
               navigation.navigate("Comments");
-              // navigation.navigate("Comments", { screen: "CommentsScreen" });
-              // navigateOnPress();
             }}
           >
             <CommentsIcon size={24} color={"#FF6C00"} />
@@ -65,7 +63,6 @@ const styles = StyleSheet.create({
     maxWidth: "100%",
   },
   cardImage: {
-    // resizeMode: "cover",
     resizeMode: "cover",
     borderRadius: 8,
     alignSelf: "center",

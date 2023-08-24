@@ -6,12 +6,10 @@ import { View } from "react-native";
 
 const CommentsList = ({ item }) => {
   const isChangedPosition = item?.userAvatar === 20;
-    console.log("isChangedPosition", isChangedPosition);
-//   console.log("item", item?.userAvatar);
+
   return (
     <View
       style={{
-        // flexDirection: "row",
         flexDirection: isChangedPosition ? "row-reverse" : "row",
         maxWidth: "100%",
         justifyContent: "space-between",
